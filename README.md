@@ -1,3 +1,37 @@
+# Project Overview
+
+**App Purpose:** Creating an app that connects people in Germany based on their city and interests in sports or art, facilitating interactions between trainers and participants.
+
+## Key Features
+
+1. **User Authentication and Authorization**
+
+   - Sign up, log in, and log out
+   - User profiles
+
+2. **Event Management**
+
+   - Create, view, edit, and delete events
+   - Search events by city
+
+3. **Event Participation**
+   - Users can join or leave events
+
+## Tech Stack
+
+- **Backend:**
+
+  - **Django (Python)** for web framework
+  - **Django Rest Framework (DRF)** for API creation
+  - **Django ORM** for database management
+
+- **Database:**
+
+  - **PostgreSQL** for data storage
+
+- **Authentication:**
+  - **JWT (JSON Web Tokens)** for secure user authentication
+
 **ActiveHood Project Setup**
 
 **System Requirements:**
