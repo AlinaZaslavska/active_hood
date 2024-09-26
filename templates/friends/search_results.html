@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+  }
+  h1, h2, h3 {
+    text-align: center;
+    color: #343a40;
+    margin-top: 20px;
+  }
+  table {
+    width: 60%;
+    margin: 20px auto;
+    border-collapse: collapse;
+  }
+  th, td {
+    padding: 10px;
+    text-align: center;
+    border: 1px solid #dee2e6;
+  }
+  th {
+    background-color: #007bff;
+    color: white;
+  }
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+</style>
+
+<h2>Search Users by City</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Search</button>
+</form>
+
+<h1>Search Results</h1>
+<table>
+  <tr>
+    <th>User</th>
+    <th>Actions</th>
+  </tr>
+  {% for user in users %}
+  <tr>
+    <td>{{ user.username }}</td>
+    <td>
+      <form method="post" action="{% url 'friends:send_friend_request' user.id %}">
+        {% csrf_token %}
+        <button type="submit">Add Friend</button>
+      </form>
+      <a href="{% url 'friends:user_profile' user.username %}">
+        <button type="button">View Profile</button>
+      </a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

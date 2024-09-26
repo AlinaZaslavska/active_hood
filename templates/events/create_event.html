@@ -1,0 +1,187 @@
+{% extends "base.html" %}
+
+{% block title %}Create Event{% endblock title %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="card shadow-lg border-0 rounded-lg">
+        <div class="card-header text-center">
+            <h3 class="font-weight-light my-1">Create Event</h3>
+        </div>
+        <div class="card-body">
+            <!-- Error and success messages -->
+      {% if messages %}
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+        <strong>{{ message }}</strong>
+        {% endfor %}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endif %}
+
+            <!-- Event Form -->
+            <form method="post" action="{% url 'create_event' %}">
+                {% csrf_token %}
+
+                <!-- Form Fields -->
+                <div class="row mb-4">
+                    <!-- Activity Field -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="id_activity" class="form-label custom-label">Activity</label>
+                            <select id="id_activity" name="activity" class="form-control custom-input">
+                                <option value="" disabled selected>Select an activity</option>
+                                {% for choice in form.activity.field.queryset %}
+                                <option value="{{ choice.id }}" {% if form.activity.value == choice.id|stringformat:"s" %}selected{% endif %}>{{ choice.name }}</option>
+                                {% endfor %}
+                            </select>
+                            {% if form.activity.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.activity.errors %}
+                                <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Location Field -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="id_location" class="form-label custom-label">Location</label>
+                            <select id="id_location" name="location" class="form-control custom-input">
+                                <option value="" disabled selected>Select a location</option>
+                                {% for choice in form.location.field.queryset %}
+                                <option value="{{ choice.id }}" {% if form.location.value == choice.id|stringformat:"s" %}selected{% endif %}>{{ choice.name }}</option>
+                                {% endfor %}
+                            </select>
+                            {% if form.location.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.location.errors %}
+                                <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <!-- Date Field -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="id_date" class="form-label custom-label">Date</label>
+                            <input type="date" id="id_date" name="date" class="form-control custom-input" value="{{ form.date.value }}">
+                            {% if form.date.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.date.errors %}
+                                <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Time Field -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="id_time" class="form-label custom-label">Time</label>
+                            <input type="time" id="id_time" name="time" class="form-control custom-input" value="{{ form.time.value }}">
+                            {% if form.time.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.time.errors %}
+                                <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description Field -->
+                <div class="form-group mb-4">
+                    <label for="id_description" class="form-label custom-label">Description</label>
+                    <textarea id="id_description" name="description" class="form-control custom-textarea">{{ form.description.value }}</textarea>
+                    {% if form.description.errors %}
+                    <div class="invalid-feedback d-block">
+                        {% for error in form.description.errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-outline-primary btn-lg">Create Event</button>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer text-center">
+            <a href="{% url 'events_list' %}?location={{ user.profile.city }}" class="btn btn-outline-secondary btn-sm mx-1 btn-custom">Events in my city</a>
+            <a href="{% url 'events_myevents' %}" class="btn btn-outline-secondary btn-sm mx-1 btn-custom">My events</a>
+            <a href="{% url 'events_participating' %}" class="btn btn-outline-secondary btn-sm mx-1 btn-custom">Events I joined</a>
+            <a href="{% url 'create_event' %}" class="btn btn-outline-secondary btn-sm mx-1 btn-custom">Create event</a>
+            <a href="{% url 'events_list' %}" class="btn btn-outline-secondary btn-sm mx-1 btn-custom">Back to All Events</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+<!-- Flatpickr CSS and JS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    flatpickr('#id_date', {
+      dateFormat: 'Y-m-d'
+    });
+
+    flatpickr('#id_time', {
+      enableTime: true,
+      noCalendar: true,
+      dateFormat: 'H:i',
+      time_24hr: true
+    });
+  });
+</script>
+
+<style>
+  .custom-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .custom-input, .custom-textarea {
+    border-radius: 0.375rem;
+    border: 1px solid #ced4da;
+    padding: 0.375rem 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .custom-textarea {
+    resize: vertical;
+    min-height: 150px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .invalid-feedback {
+    font-size: 14px;
+    color: #dc3545;
+  }
+
+  .btn-custom {
+    font-size: 14px;
+  }
+</style>
+

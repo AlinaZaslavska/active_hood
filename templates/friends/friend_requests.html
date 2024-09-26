@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}Friend Requests{% endblock %}
+
+{% block content %}
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+  }
+  h2, h3 {
+    text-align: center;
+    color: #343a40;
+    margin-top: 20px;
+  }
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  li {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin: 10px auto;
+    padding: 10px;
+    width: 50%;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+  }
+  button:hover {
+    background-color: #0056b3;
+  }
+</style>
+
+<div>
+  <h2>Friend Requests</h2>
+
+  <h3>New Requests</h3>
+  <ul>
+      {% for friend_request in new_requests %}
+          <li>
+              {{ friend_request.from_user.username }}
+              <a href="{% url 'friends:user_profile' friend_request.from_user.username %}">
+                <button type="button">View Profile</button>
+              </a>
+              <form method="post" action="{% url 'friends:accept_friend_request' friend_request.id %}">
+                  {% csrf_token %}
+                  <button type="submit">Accept</button>
+              </form>
+          </li>
+      {% empty %}
+          <li>No new requests</li>
+      {% endfor %}
+  </ul>
+
+  <h3>Your Friends</h3>
+  <ul>
+      {% for friend in friends_list %}
+          <li>
+              {{ friend.user.username }}
+              <a href="{% url 'friends:user_profile' friend.user.username %}">
+                <button type="button">View Profile</button>
+              </a>
+          </li>
+      {% empty %}
+          <li>You have no friends.</li>
+      {% endfor %}
+  </ul>
+</div>
+
+{% endblock %}

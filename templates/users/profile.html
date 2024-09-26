@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}Profile Page{% endblock title %}
+
+{% block content %}
+<div class="container my-4">
+  <div class="card shadow-lg border-0 rounded-lg">
+    <div class="card-header justify-content-center">
+      <h3 class="font-weight-light my-1 text-center">Profile</h3>
+    </div>
+    <div class="card-body">
+      {% if messages %}
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {% for message in messages %}
+        <strong>{{ message }}</strong>
+        {% endfor %}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endif %}
+
+      <div class="row">
+        <div class="col-md-4 text-center">
+          <img class="rounded-circle account-img" src="{{ user.profile.avatar.url }}" style="width: 150px; height: 150px; object-fit: cover; cursor: pointer;">
+
+          <p>City: {{ user.profile.city }}</p>
+          <ul class="list-group">
+            {% for profile_activity in user.profile.profileactivity_set.all %}
+            <li class="list-group-item d-flex justify-content-between align-items-center" style="font-size: 16px;">
+              <div style="flex: 1;">
+                <strong>{{ profile_activity.activity.name }}</strong>
+                <div>Level: {{ profile_activity.skill_level }}</div>
+              </div>
+              <form method="post" action="{% url 'delete-activity' profile_activity.id %}" style="display: flex; justify-content: center; align-items: center; flex: 0;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+              </form>
+            </li>
+            {% empty %}
+            <li class="list-group-item" style="font-size: 16px;">No preferred activities listed.</li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="col-md-8">
+          {% if user_form.errors %}
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <div id="form_errors">
+              {% for key, value in user_form.errors.items %}
+              <strong>{{ value }}</strong>
+              {% endfor %}
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endif %}
+
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group mb-4">
+              <label for="id_first_name" class="form-label custom-label">First Name</label>
+              {{ user_form.first_name }}
+            </div>
+            <div class="form-group mb-4">
+              <label for="id_last_name" class="form-label custom-label">Last Name</label>
+              {{ user_form.last_name }}
+            </div>
+            <div class="form-group mb-4">
+              <label for="id_username" class="form-label custom-label">Username</label>
+              {{ user_form.username }}
+            </div>
+            <div class="form-group mb-4">
+              <label for="id_email" class="form-label custom-label">Email</label>
+              {{ user_form.email }}
+            </div>
+            <div class="form-check mb-4">
+              {{ profile_form.hide_email }}
+              <label for="id_hide_email" class="form-check-label">Hide Email</label>
+            </div>
+            <div class="form-group mb-4">
+              <label for="id_telephone" class="form-label custom-label">Telephone</label>
+              {{ profile_form.telephone }}
+            </div>
+            <div class="form-check mb-4">
+              {{ profile_form.hide_telephone }}
+              <label for="id_hide_telephone" class="form-check-label">Hide Telephone</label>
+            </div>
+            <div class="form-group mb-4">
+              <label for="id_date_of_birth" class="form-label custom-label">Date of Birth</label>
+              {{ profile_form.date_of_birth }}
+            </div>
+            <div class="form-group mb-4">
+              <a href="{% url 'password_change' %}" class="btn btn-outline-primary btn-lg" style="font-size: 16px;">Change Password</a>
+            </div>
+            <div class="form-group mb-4">
+              <label for="id_avatar" class="form-label custom-label">Change Avatar</label>
+              {{ profile_form.avatar }}
+            </div>
+            <div class="form-group mb-4">
+              <label for="id_bio" class="form-label custom-label">Bio</label>
+              {{ profile_form.bio }}
+            </div>
+            <div class="form-group mb-4">
+              <label for="id_city" class="form-label custom-label">City</label>
+              {{ profile_form.city }}
+            </div>
+
+            <h4 class="mt-4" style="font-size: 18px;">Choose sports you like</h4>
+            {{ formset.management_form }}
+            {% for form in formset %}
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="{{ form.activity.id_for_label }}" class="form-label custom-label">{{ form.activity.label }}</label>
+                  {{ form.activity }}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="{{ form.skill_level.id_for_label }}" class="form-label custom-label">{{ form.skill_level.label }}</label>
+                  {{ form.skill_level }}
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+
+            <div class="mt-4">
+              <button type="submit" class="btn btn-outline-primary btn-lg" style="font-size: 16px;">Save Changes</button>
+              <button type="reset" class="btn btn-outline-secondary btn-lg" style="font-size: 16px;">Reset</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-center">
+      <!-- Optionally add links or additional information here -->
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+<style>
+  .custom-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+  }
+  .form-content {
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  .card-header, .card-footer {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+  }
+  .alert {
+    margin-bottom: 1rem;
+  }
+  .card-body .form-group {
+    margin-bottom: 1.5rem;
+  }
+  .card-body .btn {
+    margin-top: 1rem;
+  }
+  .account-img {
+    cursor: pointer;
+  }
+</style>
+

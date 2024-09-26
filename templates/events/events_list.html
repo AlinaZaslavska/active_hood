@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block title %}Events{% endblock title %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="card shadow-lg border-0 rounded-lg">
+        <div class="card-header text-center">
+            <h3 class="font-weight-light my-1">Events</h3>
+        </div>
+        <div class="card-body">
+            <form method="get" class="mb-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="location" class="form-label custom-label">Filter by location:</label>
+                            <select name="location" id="location" class="form-control">
+                                <option value="">All locations</option>
+                                {% for location in locations %}
+                                <option value="{{ location.name }}" {% if request.GET.location == location.name %}selected{% endif %}>
+                                    {{ location.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-3">
+                            <label for="activity" class="form-label custom-label">Filter by activity:</label>
+                            <select name="activity" id="activity" class="form-control">
+                                <option value="">All activities</option>
+                                {% for activity in activities %}
+                                <option value="{{ activity.name }}" {% if request.GET.activity == activity.name %}selected{% endif %}>
+                                    {{ activity.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-outline-primary btn-sm">Filter</button>
+                </div>
+            </form>
+            <div class="text-center mb-4">
+                <a href="#" class="btn btn-outline-secondary btn-sm mx-1 btn-custom">Events in my city</a>
+                <a href="{% url 'events_myevents' %}" class="btn btn-outline-secondary btn-sm mx-1 btn-custom">My events</a>
+                <a href="{% url 'events_participating' %}" class="btn btn-outline-secondary btn-sm mx-1 btn-custom">Events I joined</a>
+                <a href="{% url 'create_event' %}" class="btn btn-outline-secondary btn-sm mx-1 btn-custom">Create event</a>
+            </div>
+            <hr>
+            <div class="events-list mt-4">
+                <div class="row">
+                    {% for event in events %}
+                    <div class="col-md-6 mb-3">
+                        <div class="event-item p-3 border rounded bg-light">
+                            <h4 class="event-title">{{ event.activity.name }}</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Description:</strong> {{ event.description }}</p>
+                                    <p><strong>Date:</strong> {{ event.date }}</p>
+                                    {% if event.time %}
+                                    <p><strong>Time:</strong> {{ event.time|date:"H:i" }}</p>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    {% if event.location %}
+                                    <p><strong>Location:</strong> {{ event.location.name }}</p>
+                                    {% else %}
+                                    <p><strong>Location:</strong> Not specified</p>
+                                    {% endif %}
+                                    <p><strong>Created by:</strong> {{ event.creator.first_name }} {{ event.creator.last_name }}</p>
+                                </div>
+                            </div>
+                            <div class="text-left mt-2">
+                                <a href="{% url 'event_detail' event.pk %}" class="btn btn-info btn-sm">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p>No events found.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+<style>
+  .custom-label {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .card-header, .card-footer {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  .event-item {
+    background-color: #e9ecef; /* Light grey background for the event boxes */
+    border: 1px solid #ced4da;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 0;
+    padding: 0.75rem; /* Reduced padding */
+  }
+
+  .event-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #007bff; /* Highlight sport name with primary color */
+    margin-bottom: 0.5rem;
+  }
+
+  .card-body .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .card-body .btn {
+    margin-top: 1rem;
+  }
+
+  .btn-outline-primary {
+    border-color: #007bff;
+    color: #007bff;
+  }
+
+  .btn-outline-primary:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+
+  .btn-custom {
+    border-width: 1px;
+    border-color: #6c757d;
+    color: #6c757d;
+    background-color: #fff; /* Ensures background is white to match filter button */
+  }
+
+  .btn-custom:hover {
+    background-color: #6c757d;
+    color: #fff;
+  }
+
+  .event-item p {
+    margin-bottom: 0.25rem; /* Reduced bottom margin for paragraphs */
+  }
+
+  .event-item .text-left {
+    text-align: left;
+  }
+</style>
+

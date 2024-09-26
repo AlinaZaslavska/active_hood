@@ -1,0 +1,275 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Home Page {% endblock title %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section text-center py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 mx-auto">
+        <div class="hero-content">
+          <h1 class="display-4 mb-4">Welcome to ActiveHood!</h1>
+          {% if user.is_authenticated %}
+          <p class="lead mb-4">
+            Welcome back, {{ user.first_name }}! Explore new activities, connect with friends, and stay active with ActiveHood. Discover local events, join groups, and share your experiences with others who share your passion for sports and fitness.
+          </p>
+          <p class="lead mb-4">
+            Ready to continue your journey? Check out our latest updates and connect with your community today!
+          </p>
+          <a class="btn btn-primary btn-lg mt-3" href="{% url 'events_list' %}" role="button">Explore Events</a>
+          {% else %}
+          <p class="lead mb-4">
+            ActiveHood is a vibrant social media platform designed for sports enthusiasts looking to connect with like-minded individuals. Whether you're passionate about running, cycling, soccer, or yoga, ActiveHood makes it easy to find friends who share your interests.
+          </p>
+          <hr class="my-4" />
+          <p class="lead mb-4">
+            With a user-friendly interface, you can create a profile highlighting your favorite sports, join local groups, and participate in events tailored to your activity level. Share your achievements, seek advice, or simply find workout buddies in your area.
+          </p>
+          <p class="lead mb-4">
+            ActiveHood fosters a supportive community, encouraging users to motivate one another and build lasting friendships through shared passions. Join ActiveHood today and take your sports experience to the next level!
+          </p>
+          <a class="btn btn-primary btn-lg mt-3" href="{% url 'users-register' %}" role="button">Join Now</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section py-5 bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="feature-item text-center mb-4">
+          <img src="{% static 'images/feature-connect.jpg' %}" alt="Connect with Others" class="img-fluid mb-3">
+          <h3 class="mt-3">Connect with Others</h3>
+          <p>Find friends who share your passion for sports and activities.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-item text-center mb-4">
+          <img src="{% static 'images/feature-events.jpg' %}" alt="Join Events" class="img-fluid mb-3">
+          <h3 class="mt-3">Join Events</h3>
+          <p>Participate in local events and activities tailored to your interests.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="feature-item text-center mb-4">
+          <img src="{% static 'images/feature-engage.jpg' %}" alt="Engage with Community" class="img-fluid mb-3">
+          <h3 class="mt-3">Engage with Community</h3>
+          <p>Share achievements, seek advice, and motivate others in our supportive community.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Values Section -->
+<section class="values-section py-5">
+  <div class="container">
+    <h2 class="text-center mb-5">Our Values</h2>
+    <div class="row">
+      <!-- Value 1: Community -->
+      <div class="col-md-4">
+        <div class="value-item text-center mb-4">
+          <div class="image-container">
+            <img src="{% static 'images/value-community.jpg' %}" alt="Community" class="img-fluid">
+            <div class="text-overlay">
+              <h3>Community</h3>
+              <p>We value the power of local connections. By bringing people together in their neighborhoods, we strengthen the fabric of our communities.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Value 2: Inclusivity -->
+      <div class="col-md-4">
+        <div class="value-item text-center mb-4">
+          <div class="image-container">
+            <img src="{% static 'images/value-inclusivity.jpg' %}" alt="Inclusivity" class="img-fluid">
+            <div class="text-overlay">
+              <h3>Inclusivity</h3>
+              <p>Everyone is welcome on ActiveHood, regardless of skill level or experience. Our platform is for anyone who wants to share their passion for sports and arts.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Value 3: Fun -->
+      <div class="col-md-4">
+        <div class="value-item text-center mb-4">
+          <div class="image-container">
+            <img src="{% static 'images/value-fun.jpg' %}" alt="Fun" class="img-fluid">
+            <div class="text-overlay">
+              <h3>Fun</h3>
+              <p>Above all, we believe that having fun is the key to a healthy, happy life. Our events are designed to be enjoyable and stress-free.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Value 4: Health and Wellness -->
+      <div class="col-md-4">
+        <div class="value-item text-center mb-4">
+          <div class="image-container">
+            <img src="{% static 'images/value-health.jpg' %}" alt="Health and Wellness" class="img-fluid">
+            <div class="text-overlay">
+              <h3>Health and Wellness</h3>
+              <p>We promote an active lifestyle through sports and recreational activities, contributing to the overall well-being of our users.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Value 5: Empowerment -->
+      <div class="col-md-4">
+        <div class="value-item text-center mb-4">
+          <div class="image-container">
+            <img src="{% static 'images/value-empowerment.jpg' %}" alt="Empowerment" class="img-fluid">
+            <div class="text-overlay">
+              <h3>Empowerment</h3>
+              <p>We empower users to take initiative and lead their own events, fostering leadership and collaboration skills.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Value 6: Growth -->
+      <div class="col-md-4">
+        <div class="value-item text-center mb-4">
+          <div class="image-container">
+            <img src="{% static 'images/value-growth.jpg' %}" alt="Growth" class="img-fluid">
+            <div class="text-overlay">
+              <h3>Growth</h3>
+              <p>We believe in personal and communal growth through continuous learning and development, helping our users to evolve and achieve their goals.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Invite Your Friends Section -->
+<section class="cta-section text-center py-5 bg-light">
+  <div class="container">
+    <h2 class="mb-4">Invite Your Friends to Join ActiveHood!</h2>
+    {% if user.is_authenticated %}
+    <p class="lead mb-4">Help us grow our community by inviting your friends. Enter their email addresses below, and we'll send them an invitation to join ActiveHood.</p>
+    
+    <form method="post" action="{% url 'send_invitation' %}" class="mt-4 mx-auto" style="max-width: 500px;">
+      {% csrf_token %}
+      <div class="form-group">
+        <input type="email" name="email" class="form-control form-control-lg" placeholder="Enter your friend's email" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-lg btn-block">Send Invitation</button>
+    </form>
+    
+    {% else %}
+    <p class="lead mb-4">Sign in to invite your friends and help us grow our community.</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Sign In</a>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock content %}
+
+<style>
+/* Hero Section */
+.hero-section {
+    background: url("{% static 'images/hero-bg.jpg' %}") no-repeat center center;
+    background-size: cover;
+    height: 100vh;
+}
+
+.hero-content {
+    text-align: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.5); /* Slight overlay for readability */
+    border-radius: 8px;
+}
+
+/* Features Section */
+.feature-item {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 15px;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.feature-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px; /* Rounded edges for feature images */
+}
+
+/* Values Section */
+.values-section {
+    padding: 3rem 0;
+}
+
+.values-section h2 {
+    margin-bottom: 2rem;
+}
+
+.values-section .value-item {
+    margin-bottom: 1.5rem;
+}
+
+.values-section .image-container {
+    position: relative;
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 8px; /* Rounded edges for container */
+}
+
+.values-section .image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px; /* Ensure images fit container with rounded edges */
+    filter: brightness(50%);
+}
+
+.values-section .text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+    width: 75%;
+}
+
+.values-section .text-overlay h3 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.values-section .text-overlay p {
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+/* CTA Section */
+.cta-section {
+    background-color: #f8f9fa;
+}
+
+.cta-section .btn-primary {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+}
+
+.cta-section form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.cta-section .form-control {
+    padding: 0.75rem 1rem;
+    border-radius: 0.375rem;
+}

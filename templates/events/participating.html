@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-lg">
+        <div class="card-header text-center">
+            <h1 class="font-weight-light">Events I Joined</h1>
+        </div>
+        <div class="card-body">
+            {% if events %}
+            <div class="events-list mt-4">
+                <div class="row">
+                    {% for event in events %}
+                    <div class="col-md-6 mb-3">
+                        <div class="event-item p-3 border rounded bg-light d-flex flex-column">
+                            <div class="event-content flex-grow-1">
+                                <h4 class="event-title">{{ event.activity }}</h4>
+                                <p><strong>Date:</strong> {{ event.date }}</p>
+                                {% if event.time %}
+                                <p><strong>Time:</strong> {{ event.time|date:"H:i" }}</p>
+                                {% endif %}
+                                <p><strong>Description:</strong> {{ event.description }}</p>
+                                {% if event.location %}
+                                <p><strong>Location:</strong> {{ event.location.name }}</p>
+                                {% else %}
+                                <p><strong>Location:</strong> Not specified</p>
+                                {% endif %}
+                                <p><strong>Created by:</strong> {{ event.creator.first_name }} {{ event.creator.last_name }}</p>
+                            </div>
+                            <div class="text-left mt-2">
+                                <a href="{% url 'event_detail' event.pk %}" class="btn btn-info btn-sm">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p class="text-center">No events found.</p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% else %}
+            <p class="text-center">No events found.</p>
+            {% endif %}
+        </div>
+        <div class="card-footer text-center">
+            <div class="btn-group" role="group">
+                <a href="{% url 'events_list' %}" class="btn btn-outline-secondary mx-1">All Events</a>
+                <a href="{% url 'events_list' %}?location={{ user_city }}" class="btn btn-outline-secondary mx-1">Events in My City</a>
+                <a href="{% url 'events_myevents' %}" class="btn btn-outline-secondary mx-1">My Events</a>
+                <a href="{% url 'create_event' %}" class="btn btn-outline-secondary mx-1">Create Event</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+<style>
+  .card-header h1 {
+    font-size: 24px;
+    font-weight: 300;
+    color: #333;
+  }
+
+  .events-list .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .event-item {
+    background-color: #e9ecef; /* Light grey background for the event boxes */
+    border: 1px solid #ced4da;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin: 0;
+    padding: 0.75rem; /* Consistent padding */
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Ensures all boxes have the same height */
+    box-sizing: border-box;
+  }
+
+  .event-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #007bff; /* Highlight event title with primary color */
+    margin-bottom: 0.5rem;
+  }
+
+  .event-content {
+    flex-grow: 1; /* Allows the content to expand and push the button to the bottom */
+  }
+
+  .card-footer {
+    background-color: #f8f9fa;
+  }
+
+  .btn-group .btn {
+    font-size: 14px;
+    padding: 0.5rem 1rem;
+  }
+
+  .btn-outline-secondary {
+    border-color: #ced4da;
+    color: #495057;
+  }
+
+  .btn-outline-secondary:hover {
+    background-color: #e9ecef;
+    border-color: #ced4da;
+    color: #495057;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .event-item p {
+    margin-bottom: 0.25rem; /* Reduced bottom margin for paragraphs */
+  }
+
+  .col-md-6 {
+    display: flex;
+    align-items: stretch;
+  }
+</style>
+
